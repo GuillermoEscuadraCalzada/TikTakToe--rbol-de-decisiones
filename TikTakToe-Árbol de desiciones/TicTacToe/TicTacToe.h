@@ -18,8 +18,10 @@ public:
 	void Update();
 	void PlayerInput();
 	void setNewBoard(int x, int y);
+	void CheckWin();
 private:
-	bool running; 
+	bool running;
+	bool win;
 	static TicTacToe* ptr;
 	TicTacToe();
 	~TicTacToe();

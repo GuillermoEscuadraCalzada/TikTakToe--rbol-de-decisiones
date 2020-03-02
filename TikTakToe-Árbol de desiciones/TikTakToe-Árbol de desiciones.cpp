@@ -16,6 +16,4 @@ int main()
     game->printBoard();
     //game->PlayerInput();
     game->Update();
-	//Prueba
-
 }

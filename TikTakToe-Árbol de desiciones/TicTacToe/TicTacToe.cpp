@@ -51,7 +51,16 @@ void TicTacToe::Init() {
 void TicTacToe::Update() {
 	while(running) {
 		PlayerInput();
+		CheckWin();
 		printBoard();
+	}
+	if (win)
+	{
+		cout << "YOU WINNNNNNNNNNNNNNNNNNNNNN";
+	}
+	else
+	{
+		cout << "YOU LOOOOOOOOOOOOOOOOOOSE";
 	}
 }
 
@@ -107,7 +116,87 @@ void TicTacToe::setNewBoard(int x, int y) {
 	}
 }
 
+void TicTacToe::CheckWin()
+{
+	string checking;
+	//Horzontales
+	for (int j = 0; j < lines; j++)
+	{
+		if (gameBoard[0][j] == "O" || gameBoard[0][j] == "X")
+		{
+			checking = gameBoard[0][j];
+			if (gameBoard[1][j] == checking && gameBoard[2][j] == checking)
+			{
+				if (checking == "O")
+				{
+					win = true;
+					running = false;
+				}
+				else if (checking == "X")
+				{
+					running = false;
+				}
+			}
+		}
+	}
 
+	//Verticales
+	for (int i = 0; i < lines; i++)
+	{
+		if (gameBoard[i][0] == "O" || gameBoard[i][0] == "X")
+		{
+			checking = gameBoard[i][0];
+			if (gameBoard[i][1] == checking && gameBoard[i][2] == checking)
+			{
+				if (checking == "O")
+				{
+					running = false;
+					win = true;
+				}
+				else if (checking == "X")
+				{
+					running = false;
+				}
+			}
+		}
+	}
+
+	//Diagonal 1
+	if (gameBoard[0][0] == "O" || gameBoard[0][0] == "X")
+	{
+		checking = gameBoard[0][0];
+		if (gameBoard[1][1] == checking && gameBoard[2][2] == checking)
+		{
+			if (checking == "O")
+			{
+				win = true;
+				running = false;
+			}
+			else if (checking == "X")
+			{
+				running = false;
+			}
+		}
+	}
+
+	//Diagonal 2
+	if (gameBoard[2][2] == "O" || gameBoard[2][2] == "X")
+	{
+		checking = gameBoard[2][2];
+		if (gameBoard[1][1] == checking && gameBoard[0][0] == checking)
+		{
+			if (checking == "O")
+			{
+				win = true;
+				running = false;
+			}
+			else if (checking == "X")
+			{
+				running = false;
+			}
+		}
+	}
+}
 
 
 TicTacToe::TicTacToe() {
