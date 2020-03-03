@@ -1,3 +1,6 @@
-﻿  TicTacToe.cpp
-C:\Dev_WoWperro\source\repos\7_Trimestre\IA\TikTakToe--rbol-de-desiciones\TikTakToe-Árbol de desiciones\TicTacToe\TicTacToe.cpp(88,14): warning C4101: 'x': unreferenced local variable
+﻿  Grafo.cpp
+  ListaS.cpp
+  NodoG.cpp
+  NodoT.cpp
+  Generating Code...
   TikTakToe-Árbol de desiciones.vcxproj -> C:\Dev_WoWperro\source\repos\7_Trimestre\IA\TikTakToe--rbol-de-desiciones\Debug\TikTakToe-Árbol de desiciones.exe

@@ -149,9 +149,17 @@
   <ItemGroup>
     <ClCompile Include="TicTacToe\TicTacToe.cpp" />
     <ClCompile Include="TikTakToe-Árbol de desiciones.cpp" />
+    <ClCompile Include="Tree\Grafo.cpp" />
+    <ClCompile Include="Tree\ListaS.cpp" />
+    <ClCompile Include="Tree\NodoG.cpp" />
+    <ClCompile Include="Tree\NodoT.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TicTacToe\TicTacToe.h" />
+    <ClInclude Include="Tree\Grafo.h" />
+    <ClInclude Include="Tree\ListaS.h" />
+    <ClInclude Include="Tree\NodoG.h" />
+    <ClInclude Include="Tree\NodoT.h" />
     <ClInclude Include="Tree\Tree.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
