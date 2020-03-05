@@ -24,18 +24,6 @@
     <ClCompile Include="TicTacToe\TicTacToe.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
-    <ClCompile Include="Tree\Grafo.cpp">
-      <Filter>Archivos de encabezado\Arbol</Filter>
-    </ClCompile>
-    <ClCompile Include="Tree\ListaS.cpp">
-      <Filter>Archivos de encabezado\Arbol</Filter>
-    </ClCompile>
-    <ClCompile Include="Tree\NodoG.cpp">
-      <Filter>Archivos de encabezado\Arbol</Filter>
-    </ClCompile>
-    <ClCompile Include="Tree\NodoT.cpp">
-      <Filter>Archivos de encabezado\Arbol</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Tree\Tree.h">

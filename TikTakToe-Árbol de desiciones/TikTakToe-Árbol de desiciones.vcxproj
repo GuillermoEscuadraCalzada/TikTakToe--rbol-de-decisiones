@@ -149,10 +149,6 @@
   <ItemGroup>
     <ClCompile Include="TicTacToe\TicTacToe.cpp" />
     <ClCompile Include="TikTakToe-Árbol de desiciones.cpp" />
-    <ClCompile Include="Tree\Grafo.cpp" />
-    <ClCompile Include="Tree\ListaS.cpp" />
-    <ClCompile Include="Tree\NodoG.cpp" />
-    <ClCompile Include="Tree\NodoT.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TicTacToe\TicTacToe.h" />

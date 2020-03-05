@@ -12,8 +12,8 @@ int main()
     //tree->insertValue(&root, 0);
     //tree->imprimirArbol(root, 0);
     TicTacToe* game = TicTacToe::GetPtr();
-    game->SetUp();
-    game->printBoard();
+    game->Init();
+    game->Update();
     //game->PlayerInput();
     game->Update();
 }
