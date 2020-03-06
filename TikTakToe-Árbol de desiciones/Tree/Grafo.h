@@ -23,9 +23,9 @@ public:
 	~Grafo();
 	void InsertaNodo(NodoG<T>* data);
 	void CreaConexion(NodoG<T>* nodo1, NodoG<T>* nodo2);
-
+	void eliminarTodo();
 	ListaS<NodoG<T>*> GetAllNodes();
-
+	NodoG<T>* GetFirst();
 	void Reset();
 	void PrintResult();
 	void PrintPath(ListaS<NodoG<T>*> l);
@@ -79,10 +79,20 @@ void Grafo<T>::CreaConexion(NodoG<T>* nodo1, NodoG<T>* nodo2)
 	nodo2->l.Add(nodo1);
 }
 
+template<class T>
+inline void Grafo<T>::eliminarTodo() {
+}
+
 /*Regresa la Lista AllNodes*/
 template<class T>
 inline ListaS<NodoG<T>*> Grafo<T>::GetAllNodes() {
 	return AllNodes;
+}
+
+/*Regresa el primer elemento de la lista del grafo*/
+template<class T>
+inline NodoG<T>* Grafo<T>::GetFirst() {
+	return first;
 }
 
 /**
@@ -127,8 +137,12 @@ void Grafo<T>::PrintResult()
 template <class T>
 void Grafo<T>::PrintPath(ListaS<NodoG<T>*> l )
 {
-	for (int i = l.size - 1; i >= 0; i--)
-	{
+	//for (int i = l.size - 1; i >= 0; i--)
+	//{
+	//	std::cout << i << ")" << l.Get_at(i)->value->nodoData << "\n";
+	//}
+
+	for(int i = 0; i < l.size;  i++) {
 		std::cout << i << ")" << l.Get_at(i)->value->nodoData << "\n";
 	}
 }

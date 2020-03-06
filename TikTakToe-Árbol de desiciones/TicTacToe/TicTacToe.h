@@ -22,6 +22,7 @@ private:
 	void SetUp();
 	void printBoard();
 	void AgentTurn();
+	void checarHijos(int x, int y);
 	bool running, playerWin, agentWin;
 	static TicTacToe* ptr;
 	Grafo<int>* posibilidades;
