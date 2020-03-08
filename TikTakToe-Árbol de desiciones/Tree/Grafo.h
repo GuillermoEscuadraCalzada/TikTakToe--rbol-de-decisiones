@@ -143,6 +143,6 @@ void Grafo<T>::PrintPath(ListaS<NodoG<T>*> l )
 	//}
 
 	for(int i = 0; i < l.size;  i++) {
-		std::cout << i << ")" << l.Get_at(i)->value->nodoData << "\n";
+		std::cout << i << ")" << l.Get_at(i)->value->nodoData << "\tPosicion[" << (l.Get_at(i)->value)->x << "][" << (l.Get_at(i)->value)->y << "]\n";
 	}
 }

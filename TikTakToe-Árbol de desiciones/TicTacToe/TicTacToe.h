@@ -3,6 +3,8 @@
 #include <iostream>
 #include "../Tree/Grafo.h"
 #include <string>
+
+
 using std::to_string;
 using namespace std;
 class TicTacToe {
@@ -19,13 +21,15 @@ private:
 	void setNewBoard(int x, int y);
 	int x, y;
 	string gameBoard[lines][columns]; //El tablero representado como matriz de 2x2
+	string gameBoardCpy[lines][columns]; //El tablero representado como matriz de 2x2
 	void SetUp();
 	void printBoard();
 	void AgentTurn();
+	void checkAdjacent(int x, int y);
 	void checarHijos(int x, int y);
 	bool running, playerWin, agentWin;
 	static TicTacToe* ptr;
-	Grafo<int>* posibilidades;
+	Grafo<string>* posibilidades;
 	TicTacToe();
 	~TicTacToe();
 };

@@ -43,10 +43,10 @@ TicTacToe* TicTacToe::GetPtr() {
 }
 
 /*Función que mandará a llamar las primer funciones del juego de TicTacToe*/
-void TicTacToe::Init() {
+void TicTacToe::Init() {	
 	try {
 		running = true;
-		posibilidades = new Grafo<int>();
+		posibilidades = new Grafo<string>();
 		SetUp();
 		printBoard();
 	} catch(exception & e) {
@@ -218,55 +218,71 @@ void TicTacToe::CheckWin()
 /*Es el turno del agente, checa qué cambios hay en el tablero y a partir de ahí revisa qué cambios hubo.*/
 void TicTacToe::AgentTurn() {
 	try {
-		int posicion = 0;
 		for(int i = 0; i < lines; i++) { //Guardar los elementos desocupados del tablero dentro del grafo
-			for(int j = 0; j < columns; j++) {
-				cout << posicion << " "; //Imprimir el tablero desde cero hasta el número máximo de espacios que ocupa menos 1 (0-8)
-				/*0 1 2
-				 *3 4 5
-				 *6 7 8*/
-				//Insertar jugada del agente aquí y checar sus hijos
+			for(int j = 0; j < columns; j++) { //Insertar jugada del agente aquí y checar sus hijos
 				if(gameBoard[i][j] != "O" && gameBoard[i][j] != "X") {
-					posibilidades->InsertaNodo(new NodoG<int>(posicion)); //Añadir el nodo al grafo
+					posibilidades->InsertaNodo(new NodoG<string>(gameBoard[i][j], i, j)); //Añadir el nodo al grafo
 				}
-				posicion++; //Aumentar la posición
-			}
-			cout << endl;
+			} cout << endl;
 		} 
 		posibilidades->PrintPath(posibilidades->GetAllNodes()); //Imprimir los nodos disponibles
-		posicion = 0;
-		NodoT<NodoG<int>*>* nodo = posibilidades->GetAllNodes().first;
-		for(int i = 0; i < lines; i++) {
-			for(int j = 0; j < columns; j++) {
-				if(posicion == nodo->value->nodoData) {
-					cout << "Visitando la posicion: " << i << ", " << j << endl;
-					if(j - 1 != -1) {
-						cout << "Tengo alguien detras!\n";
-
-					}
-					if(j + 1 != columns) {
-						cout << "Tengo alguien en frente!\n";
-						//checarHijos(i, j + 1);
-					}
-					if(i - 1 != -1) {
-						cout << "Tengo alguien arriba!\n";
-
-					}
-					if(i + 1 != lines) {
-						cout << "Tengo alguien debajo!\n";
-						//checarHijos(i, j + 1);
-					}
-					nodo = nodo->next;
+		NodoT<NodoG<string>*>* nodo = posibilidades->GetAllNodes().first;
+		for (int i = 0; i < lines; i++) {
+			for (int j = 0; j < columns; j++) {
+				if (i == nodo->value->x && j == nodo->value->y) {
+					checkAdjacent(i, j);
 				}
-				cout << endl;
-				posicion++;
 			}
 		}
+
+		//for(int i = 0; i < lines; i++) {
+		//	for(int j = 0; j < columns; j++) {
+		//		if(posicion == nodo->value->nodoData) {
+		//			cout << "Visitando la posicion: " << i << ", " << j << endl;
+		//			if(j - 1 != -1) {
+		//				cout << "Tengo alguien detras!\n";
+		//			}
+		//			if(j + 1 != columns) {
+		//				cout << "Tengo alguien en frente!\n";
+		//				//checarHijos(i, j + 1);
+		//			}
+		//			if(i - 1 != -1) {
+		//				cout << "Tengo alguien arriba!\n";
+		//			}
+		//			if(i + 1 != lines) {
+		//				cout << "Tengo alguien debajo!\n";
+		//				//checarHijos(i, j + 1);
+		//			}
+		//			nodo = nodo->next;
+		//		}
+		//		cout << endl;
+		//		posicion++;
+		//	}
+		//}
 		
 	} catch(...) {
 		cout << "Algo esta mal!\n";
 	}
 
+}
+
+void TicTacToe::checkAdjacent(int x, int y)
+{
+	try {
+		if (x + 1 != columns) {
+
+		}
+		if (x - 1 >= 0) {
+
+		}if (y + 1 != lines) {
+
+		}
+		if (y - 1 >= 0) {
+
+		}
+	} catch (...) {
+		cout << "Algo salio mal!\n";
+	}
 }
 
 void TicTacToe::checarHijos(int x, int y) 	{
@@ -275,8 +291,8 @@ void TicTacToe::checarHijos(int x, int y) 	{
 			if(y + 1 != NULL)
 				checarHijos(x, y + 1);
 		}
-	} catch(...) {
-	
+	} catch(...) {	
+		cout << "Algo esta mal!\n";
 	}
 }
 

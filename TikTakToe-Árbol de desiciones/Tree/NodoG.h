@@ -16,7 +16,12 @@ public:
 	int y;
 	NodoG<T>(T dat) : nodoData(dat) {}
 	NodoG<T>(T dat, int d) : nodoData(dat), Danger(d) {}
-	NodoG<T>(T dat, int x, int y) : nodoData(dat), x(x), y(y) {}
+	int coste;
+	/*Este nodo recibe un elemento a guardar y recibe una posición dentro de la matriz
+	 *@param[T dat] el valor que se le quiere guardar dependiendo del template
+	 *@param[int x] el valor en x dentro de la matriz
+	 *@param[int y] el valor en y dentro de la matriz*/
+	NodoG<T>(T dat, int x, int y) : nodoData(dat), x(x), y(y) { coste = 0; }
 	NodoG<T>(const NodoG<T> &n) : nodoData(n.nodoData) 
 	{
 		std::cout << "Se está creando copia\n";
