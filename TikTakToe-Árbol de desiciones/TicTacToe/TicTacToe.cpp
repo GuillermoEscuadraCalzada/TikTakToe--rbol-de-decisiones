@@ -4,12 +4,12 @@ TicTacToe* TicTacToe::ptr = nullptr;
 /*Se imprimen los lugares vaciós dentro del arreglo de dos dimensiones donde sucederá el juego*/
 void TicTacToe::SetUp() {
 	try {
-		gameBoard = new string * [lines];
+		gameBoard = new string * [lines]; //Genera la primer dimensión para el arreglo de strings
 		/*Determinar qué se va a imprimir dentro de las casillas que tendrá el gameBoard*/
 		for(int i = 0; i < lines; i++) {
-			gameBoard[i] = new string[columns];
+			gameBoard[i] = new string[columns]; //Crea la segunda dimensión del arreglo de strings
 			for(int j = 0; j < columns; j++) {
-				gameBoard[i][j] = "_";
+				gameBoard[i][j] = "_"; //El elemento en esta matriz se iguala a "_" simulando un espacio vacío
 			}
 		}
 	} catch(exception & e) {
@@ -57,16 +57,17 @@ void TicTacToe::Init() {
 /*Actualizacíon constante del juego*/
 void TicTacToe::Update() {
 	while(running) {
-		PlayerInput();
+		PlayerInput(); //Turno del jugador
+		printBoard(); //Imprime la tabla
 		//CheckWin();
 		if(agentWin || playerWin)
 			break;
-		AgentTurn();
+		AgentTurn(); //Turno del agente
 		/*copyBoard(); */
 		//CheckWin();
 		if(agentWin || playerWin)
 			break;
-		printBoard();
+		printBoard(); //Imprime la tabla
 	}
 	if (playerWin)
 	{
@@ -95,7 +96,7 @@ void TicTacToe::PlayerInput() {
 		if(gameBoard[x][y] == "O"|| gameBoard[x][y] ==  "X")
 			cout << "Esa posicion ya fue elegida.\n";
 		else {
-			setNewBoard(x, y);
+			setNewBoard(x, y); //Cambia el tablero actual
 		}
 		cout << endl;
 
@@ -223,50 +224,65 @@ void TicTacToe::AgentTurn() {
 
 }
 
-Vector2 TicTacToe::MinMax(string** g)
+/*Busca un valor vacío dentro del arreglo de strings del parámetro, si está ocupado por el símbolo del agente o del jugador, lo salta
+ *@param[string** g] el tablero en el cual se va a buscar un string.
+ *@return regresa un vector de 2 dimensiones*/
+Vector2* TicTacToe::MinMax(string** g)
 {
-	for (int i = 0; i < 3; i++)
-	{
-		for (int j = 0; j < 3; j++)
-		{
+	for (int i = 0; i < lines; i++)
+	{ //Itera en la primer dimensión del arreglo
+		for (int j = 0; j < columns; j++)
+		{ //Itera en la segunda dimensión del arreglo
 			if (g[i][j] != "O" && g[i][j] != "X")
-			{
-				MinMaxR(i, j, 1, g);
+			{ //Pregunta si el string en esta posición no ha sido ocupado por el jugador o del agente 
+				MinMaxR(i, j, 1, g); //Manda a llamar la función recursiva del juego 
 			}
 		}
 	}
+	return nullptr;
+}
+
+/*Pregunta si ya hay un estado terminal
+ *@return regresa verdadero en caso de ser terminal y falso en caso de no serlo*/
+bool TicTacToe::Terminal()
+{
+	return false;
 }
 
 
-
-int TicTacToe::MinMaxR(int i, int j, int turn, string** g)
+/*Se realiza la búsqueda recursiva para saber si la posición actual es adecuada para que el agente realice su tirada ahí mismo.
+ *@param[int i] la posición en la primer dimensión [i][j]
+ *@param[int j] la posición en la segunda dimensión [i][j]
+ *@param[int turn] el turno del que esté tirando, puede ser del jugador (2) o del agente (1)
+ *@return regresa el número de la jugada (1 aceptable o -1 inaceptable) */
+int TicTacToe::MinMaxR(int i, int j, int turn, string** cp)
 {
 	int value = 0;
-	string** copy = GenerateCopy(g);
+	string** copy = GenerateCopy(cp); //Genera la copia del tablero de juego
 	if (turn == 1)
-	{
-		copy[i][j] = "X";
+	{ //El turno es del agente
+		copy[i][j] = "X"; //En la copia imprime una X en estas posiciones
 	}
 	else
-	{
-		copy[i][j] = "O";
+	{ //El turno es del jugador
+		copy[i][j] = "O"; //En la copia imprime una O en estas posiciones
 	}
 	
-	if (!Terminal(copy))
-	{
-		for (int i = 0; i < 3; i++)
-		{
-			for (int j = 0; j < 3; j++)
-			{
+	if (!Terminal(/*copy*/))
+	{ //Si no ha sido un estado terminal
+		for (int i = 0; i < lines; i++)
+		{ //Itera por la primera dimensión del arreglo
+			for (int j = 0; j < columns; j++) 
+			{ //Itera por la segunda dimensión del arreglo
 				if (copy[i][j] != "O" && copy[i][j] != "X")
-				{
+				{ //Pregunta si es un espacio vacío 
 					if (turn == 1)
-					{
-						value += MinMaxR(i, j, 2, copy);
+					{ //Si es turno del agente
+						value += MinMaxR(i, j, 2, copy); //Recursividad con el turno del jugador y suma el resultador
 					}
 					else
 					{
-						value += MinMaxR(i, j, 1, copy);
+						value += MinMaxR(i, j, 1, copy); //Recursividad con el turno del agente y suma el resultado
 					}
 				}
 			}
@@ -274,14 +290,14 @@ int TicTacToe::MinMaxR(int i, int j, int turn, string** g)
 		return value;
 	}
 	else
-	{
+	{ //Es un estado terminal
 		if (turn == 1)
-		{
-			return 1;
+		{  //Es turno del agente
+			return 1; //Regresa 1
 		}
 		else if (turn == 2)
-		{
-			return -1;
+		{ //Es turno del jugador
+			return -1; //Regresa -1
 		}
 	}
 }

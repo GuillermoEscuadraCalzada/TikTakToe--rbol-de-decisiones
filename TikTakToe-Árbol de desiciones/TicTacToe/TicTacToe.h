@@ -30,9 +30,10 @@ private:
 	bool running, playerWin, agentWin;
 	static TicTacToe* ptr;
 	Grafo<string>* posibilidades;
-	Vector2 MinMax(string** g);
+	Vector2* MinMax(string** g);
+	bool Terminal();
 	string** GenerateCopy(string** c);
-	int MinMaxR(int i, int j, int turn); //1 IA, 2 es player
+	int MinMaxR(int i, int j, int turn, string** copy); //1 IA, 2 es player
 	TicTacToe();
 	~TicTacToe();
 };

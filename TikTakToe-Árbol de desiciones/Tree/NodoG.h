@@ -1,6 +1,15 @@
 #pragma once
 #include "ListaS.h"
+class Vector2 {
+public:
+	int x;
+	int y;
+	Vector2(int x, int y) : x(x), y(y) {};
 
+	~Vector2(){}
+
+	
+};
 template <class T>
 class NodoG
 {
