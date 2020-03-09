@@ -31,7 +31,7 @@ private:
 	static TicTacToe* ptr;
 	Grafo<string>* posibilidades;
 	Vector2* MinMax(string** g);
-	bool Terminal();
+	bool Terminal(string** g);
 	string** GenerateCopy(string** c);
 	int MinMaxR(int i, int j, int turn, string** copy); //1 IA, 2 es player
 	TicTacToe();

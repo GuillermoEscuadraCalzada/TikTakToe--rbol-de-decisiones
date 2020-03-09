@@ -217,7 +217,8 @@ void TicTacToe::CheckWin()
 void TicTacToe::AgentTurn() {
 	try 
 	{
-		MinMax(GenerateCopy(gameBoard));
+		Vector2* AgentPos = MinMax(GenerateCopy(gameBoard));
+		gameBoard[AgentPos->x][AgentPos->y] = "X";
 	} catch(...) {
 		cout << "Algo esta mal!\n";
 	}
@@ -229,23 +230,77 @@ void TicTacToe::AgentTurn() {
  *@return regresa un vector de 2 dimensiones*/
 Vector2* TicTacToe::MinMax(string** g)
 {
+	Vector2* Best = new Vector2(0,0);
+	int max = -10000;
 	for (int i = 0; i < lines; i++)
 	{ //Itera en la primer dimensión del arreglo
 		for (int j = 0; j < columns; j++)
 		{ //Itera en la segunda dimensión del arreglo
 			if (g[i][j] != "O" && g[i][j] != "X")
 			{ //Pregunta si el string en esta posición no ha sido ocupado por el jugador o del agente 
-				MinMaxR(i, j, 1, g); //Manda a llamar la función recursiva del juego 
+				int temp = MinMaxR(i, j, 1, g);
+				if (max < temp) //Manda a llamar la función recursiva del juego 
+				{
+					max = temp;
+					Best->x = i;
+					Best->y = j;
+				}
 			}
 		}
 	}
-	return nullptr;
+	return Best;
 }
 
 /*Pregunta si ya hay un estado terminal
  *@return regresa verdadero en caso de ser terminal y falso en caso de no serlo*/
-bool TicTacToe::Terminal()
+bool TicTacToe::Terminal(string** g)
 {
+	string checking;
+	for (int j = 0; j < lines; j++)
+	{
+		if (g[0][j] == "O" || g[0][j] == "X")
+		{ //Preguntar si el caracter es del jugador o del agente
+			checking = g[0][j]; //Guardar el string de este elemento
+			if (g[1][j] == checking && g[2][j] == checking)
+			{ //Preguntar si en el espacio al lado de este elemento tiene string
+				return true;
+			}
+		}
+	}
+
+	//Verticales
+	for (int i = 0; i < lines; i++)
+	{
+		if (g[i][0] == "O" || g[i][0] == "X")
+		{ //Pregunta si es el jugador o es el agente
+			checking = g[i][0];
+			if (g[i][1] == checking && g[i][2] == checking)
+			{ //Checa si las verticales son del mismo string
+				return true;
+			}
+		}
+	}
+
+	//Diagonal 1, posición [0][0]
+	if (g[0][0] == "O" || g[0][0] == "X")
+	{ //Checa las diagonales de izquierda a derecha
+		checking = g[0][0];
+		if (g[1][1] == checking && g[2][2] == checking)
+		{ //checa las diagonales de [1][1] y [2][2]
+			return true;
+		}
+	}
+
+	//Diagonal 2, posición [2][2]
+	if (g[0][2] == "O" || g[0][2] == "X")
+	{ //checa de derecha a izquierda en la diagonal principal
+		checking = g[0][2];
+		if (g[1][1] == checking && g[2][0] == checking)
+		{ //Si la diagonal de la derecha a la izquierda tiene el mismo string
+			return true;
+		}
+	}
+
 	return false;
 }
 
@@ -268,7 +323,7 @@ int TicTacToe::MinMaxR(int i, int j, int turn, string** cp)
 		copy[i][j] = "O"; //En la copia imprime una O en estas posiciones
 	}
 	
-	if (!Terminal(/*copy*/))
+	if (!Terminal(copy))
 	{ //Si no ha sido un estado terminal
 		for (int i = 0; i < lines; i++)
 		{ //Itera por la primera dimensión del arreglo
