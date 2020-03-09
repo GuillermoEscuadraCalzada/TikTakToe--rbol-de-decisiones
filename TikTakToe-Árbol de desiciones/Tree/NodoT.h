@@ -6,10 +6,10 @@ class NodoT
 {
 public:
 	T value;
-	NodoT* next;
+	NodoT* next, * prev;
 	int index;
 	NodoT(T v, int index1) : value(v), index(index1)
 	{
-		next = NULL;
+		next = prev = nullptr;
 	}
 };

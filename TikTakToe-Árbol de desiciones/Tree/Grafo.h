@@ -13,21 +13,16 @@ class Grafo
 private:
 	int size;
 	NodoG<T> *first;
-	ListaS<NodoG<T>* > ResultPath;
-	ListaS<NodoG<T>* > AgendaBBD;
 	ListaS<NodoG<T>* > AllNodes;
-	NodoG<T>* firstBBD;
-	NodoG<T>* lastBBD;
 public:
 	Grafo();
 	~Grafo();
 	void InsertaNodo(NodoG<T>* data);
 	void CreaConexion(NodoG<T>* nodo1, NodoG<T>* nodo2);
-	void eliminarTodo();
+	void eliminarTodoExcepto();
 	ListaS<NodoG<T>*> GetAllNodes();
 	NodoG<T>* GetFirst();
 	void Reset();
-	void PrintResult();
 	void PrintPath(ListaS<NodoG<T>*> l);
 	void SetFirst(NodoG<T>* f);
 };
@@ -79,8 +74,20 @@ void Grafo<T>::CreaConexion(NodoG<T>* nodo1, NodoG<T>* nodo2)
 	nodo2->l.Add(nodo1);
 }
 
+/*Eliminar todo excepto al nodo que se quiera salvar. Esto es para que se eliminen las demás opciones del gato y esta se quede como nuevo padre*/
 template<class T>
-inline void Grafo<T>::eliminarTodo() {
+inline void Grafo<T>::eliminarTodoExcepto() {
+	try{
+		NodoT<NodoG<int>*>* iterador = AllNodes.first;
+		while (iterador != nullptr) {
+			NodoT<NodoG<int>*>* temp = iterador->next;
+			delete iterador;
+			iterador = nullptr;
+			iterador = temp;
+		}
+	} catch (...) {
+
+	}
 }
 
 /*Regresa la Lista AllNodes*/
@@ -109,25 +116,7 @@ void Grafo<T>::Reset()
 	}
 }
 
-/**
-* Imprime Los resultados
-*
-* @param NULL
-*/
-template <class T>
-void Grafo<T>::PrintResult()
-{
-	try {
-		if(ResultPath.size == 0)
-			throw(0);
-		for (int i = ResultPath.size - 1; i >= 0; i--)
-		{
-			cout << i << ") "<< (ResultPath.Get_at(i)->value)->nodoData << "\n";
-		}
-	} catch(int x) {
-		cout << "Tamaño del grafo igual a cero\n";
-	}
-}
+
 
 /**
 * Imprime una lista

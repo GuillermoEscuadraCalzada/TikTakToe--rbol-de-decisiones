@@ -33,8 +33,6 @@ void TicTacToe::printBoard() {
 	}
 }
 
-
-
 /*La clase será singleton, por lo que el constructor y destructor no se pueden conseguir de manera pública*/
 TicTacToe* TicTacToe::GetPtr() {
 	if(!ptr) //Si el apuntador es nulo, crea uno nuevo
@@ -113,10 +111,11 @@ void TicTacToe::PlayerInput() {
 /*Se actualiza el nuevo gameboard en caso de que ingresen buenos inputs por parte del jugador*/
 void TicTacToe::setNewBoard(int x, int y) {
 	try {
+		/*Se actualiza el input del jugador dentro de la matriz del juego*/
 		for(int i = 0; i < lines; i++) {
-			if(i == x) {
+			if(i == x) { //Si la i es igual a la x, avanza el la j
 				for(int j = 0; j < columns; j++) {
-					if(j == y) {
+					if(j == y) { //Si es igual, cambia el string a una O
 						gameBoard[i][j] = "O";
 					}
 				}
@@ -140,15 +139,12 @@ void TicTacToe::CheckWin()
 			checking = gameBoard[0][j]; //Guardar el string de este elemento
 			if (gameBoard[1][j] == checking && gameBoard[2][j] == checking)
 			{ //Preguntar si en el espacio al lado de este elemento tiene string
-				if (checking == "O")
-				{  //Preguntar si es del jugador
+				if (checking == "O") { //Preguntar si es del jugador
 					playerWin = true; //Win es igual a true
 					running = false; //Termina el juego
-				}
-				else if (checking == "X")
-				{
-					agentWin = true;
-					running = false;
+				} else if (checking == "X") { //El ganador es el agente
+					agentWin = true; //Cambia el bool a verdadero
+					running = false; //Rompe el while
 				}
 			}
 		}
@@ -156,21 +152,21 @@ void TicTacToe::CheckWin()
 
 	//Verticales
 	for (int i = 0; i < lines; i++)
-	{
+	{ 
 		if (gameBoard[i][0] == "O" || gameBoard[i][0] == "X")
-		{
+		{ //Pregunta si es el jugador o es el agente
 			checking = gameBoard[i][0];
 			if (gameBoard[i][1] == checking && gameBoard[i][2] == checking)
-			{
+			{ //Checa si las verticales son del mismo string
 				if (checking == "O")
-				{
-					running = false;
-					playerWin = true;
+				{ //Checa si es string del jugador
+					running = false; //Termina el while
+					playerWin = true; //Gana el jugador
 				}
 				else if (checking == "X")
-				{
-					agentWin = true;
-					running = false;
+				{ //Es string del agente
+					agentWin = true; //Gana el agente
+					running = false; //Termina el while
 				}
 			}
 		}
@@ -178,36 +174,35 @@ void TicTacToe::CheckWin()
 
 	//Diagonal 1, posición [0][0]
 	if (gameBoard[0][0] == "O" || gameBoard[0][0] == "X")
-	{
+	{ //Checa las diagonales de izquierda a derecha
 		checking = gameBoard[0][0];
-		if (gameBoard[1][1] == checking && gameBoard[2][2] == checking)
-		{
+		if (gameBoard[1][1] == checking && gameBoard[2][2] == checking) { //checa las diagonales de [1][1] y [2][2]
 			if (checking == "O")
-			{
-				playerWin = true;
-				running = false;
+			{ //Checa si son símbolos del jugador
+				playerWin = true; //Gana el jugador
+				running = false; //Rompe el while
 			}
 			else if (checking == "X")
-			{
-				agentWin = true;
-				running = false;
+			{ //Checa si es tirada del agente
+				agentWin = true; //Gana el agente, rompe el while
+				running = false; //
 			}
 		}
 	}
 
 	//Diagonal 2, posición [2][2]
 	if (gameBoard[0][2] == "O" || gameBoard[0][2] == "X")
-	{
+	{ //checa de derecha a izquierda en la diagonal principal
 		checking = gameBoard[0][2];
 		if (gameBoard[1][1] == checking && gameBoard[2][0] == checking)
-		{
+		{ //Si la diagonal de la derecha a la izquierda tiene el mismo string
 			if (checking == "O")
-			{
-				playerWin = true;
-				running = false;
+			{ //Pregunta si es símbolo del jugador
+				playerWin = true; //Gana el jugador
+				running = false; //Termina el while
 			}
 			else if (checking == "X")
-			{
+			{ //Pregunta si es símbolo del jugador
 				agentWin = true;
 				running = false;
 			}
@@ -221,16 +216,16 @@ void TicTacToe::AgentTurn() {
 		for(int i = 0; i < lines; i++) { //Guardar los elementos desocupados del tablero dentro del grafo
 			for(int j = 0; j < columns; j++) { //Insertar jugada del agente aquí y checar sus hijos
 				if(gameBoard[i][j] != "O" && gameBoard[i][j] != "X") {
-					posibilidades->InsertaNodo(new NodoG<string>(gameBoard[i][j], i, j)); //Añadir el nodo al grafo
+					posibilidades->InsertaNodo(new NodoG<string>(gameBoard[i][j], j, i)); //Añadir el nodo al grafo
 				}
 			} cout << endl;
 		} 
 		posibilidades->PrintPath(posibilidades->GetAllNodes()); //Imprimir los nodos disponibles
-		NodoT<NodoG<string>*>* nodo = posibilidades->GetAllNodes().first;
+		NodoT<NodoG<string>*>* iterador = posibilidades->GetAllNodes().first;
 		for (int i = 0; i < lines; i++) {
 			for (int j = 0; j < columns; j++) {
-				if (i == nodo->value->x && j == nodo->value->y) {
-					checkAdjacent(i, j);
+				if (i == iterador->value->y && j == iterador->value->x) {
+					checkAdjacent(i, j, iterador->value);
 				}
 			}
 		}
@@ -266,19 +261,40 @@ void TicTacToe::AgentTurn() {
 
 }
 
-void TicTacToe::checkAdjacent(int x, int y)
+/*Checa las casillas adyacentes a la casilla actual y a sus vecinos posibles
+ *@param[int y] posición dentro de una matriz en las líneas
+ *@param[int x] posición dentro de una matriz en las columnas
+ *@param[NodoG<string>* posibilidad] el nodo que tiene una posibilidad para establecer la jugada del agente */
+void TicTacToe::checkAdjacent(int y, int x, NodoG<string>* posibilidad)
 {
 	try {
-		if (x + 1 != columns) {
-
+		if (x + 1 <  columns) { //Analizar la posición de en frente de la casilla actual
+			if (gameBoard[y][x + 1] == "X"|| gameBoard[y][x + 1] == "_") { //Pregunta si la casilla frontal tiene jugada del agente o está vacía
+				posibilidad->cost += 10; //Aumenta el coste del nodo en 10
+			} else if (gameBoard[y][x + 1] == "O") { //Si la casilla de enfrente tiene símbolo del jugador, reduce el costo del nodo
+				posibilidad->cost -= 10;
+			}
 		}
 		if (x - 1 >= 0) {
+			if (gameBoard[y][x - 1] == "X" || gameBoard[y][x - 1] == "_") { //Pregunta si la casilla trasera tiene jugada del agente o está vacía
+				posibilidad->cost += 10;
+			} else if (gameBoard[y][x - 1] == "O") {
+				posibilidad->cost -= 10;
+			}
 
-		}if (y + 1 != lines) {
-
+		}if (y + 1 < lines) {
+			if (gameBoard[y + 1][x] == "X" || gameBoard[y + 1][x] == "_") { //Pregunta si la casilla de arriba tiene jugada del agente o está vacía
+				posibilidad->cost += 10;
+			} else if (gameBoard[y + 1][x] == "O") {
+				posibilidad->cost -= 10;
+			}
 		}
 		if (y - 1 >= 0) {
-
+			if (gameBoard[y - 1][x] == "X" || gameBoard[y - 1][x] == "_") { //Pregunta si la casilla de abajo tiene jugada del agente o está vacía
+				posibilidad->cost += 10;
+			} else if (gameBoard[y - 1][x] == "O") {
+				posibilidad->cost -= 10;
+			}
 		}
 	} catch (...) {
 		cout << "Algo salio mal!\n";

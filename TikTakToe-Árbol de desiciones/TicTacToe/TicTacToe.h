@@ -25,7 +25,7 @@ private:
 	void SetUp();
 	void printBoard();
 	void AgentTurn();
-	void checkAdjacent(int x, int y);
+	void checkAdjacent(int y, int x, NodoG<string>* posibilidad);
 	void checarHijos(int x, int y);
 	bool running, playerWin, agentWin;
 	static TicTacToe* ptr;
