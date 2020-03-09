@@ -1,1 +1,4 @@
-﻿  TikTakToe-Árbol de desiciones.vcxproj -> C:\Dev_WoWperro\source\repos\7_Trimestre\IA\TikTakToe--rbol-de-desiciones\Debug\TikTakToe-Árbol de desiciones.exe
+﻿  TicTacToe.cpp
+D:\Programación\TikTakToe-Árbol de desiciones\TikTakToe-Árbol de desiciones\TicTacToe\TicTacToe.cpp(104,14): warning C4101: 'x': variable local sin referencia
+D:\Programación\TikTakToe-Árbol de desiciones\TikTakToe-Árbol de desiciones\TicTacToe\TicTacToe.cpp(363): warning C4715: 'TicTacToe::MinMaxR': no todas las rutas de acceso de control devuelven un valor
+  TikTakToe-Árbol de desiciones.vcxproj -> D:\Programación\TikTakToe-Árbol de desiciones\Debug\TikTakToe-Árbol de desiciones.exe

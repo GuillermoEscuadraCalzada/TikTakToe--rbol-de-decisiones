@@ -33,6 +33,7 @@ private:
 	Vector2* MinMax(string** g);
 	bool Terminal(string** g);
 	string** GenerateCopy(string** c);
+	void deleteCopy(string** copy);
 	int MinMaxR(int i, int j, int turn, string** copy); //1 IA, 2 es player
 	TicTacToe();
 	~TicTacToe();

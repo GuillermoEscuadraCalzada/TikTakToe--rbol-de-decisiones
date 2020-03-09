@@ -59,12 +59,12 @@ void TicTacToe::Update() {
 	while(running) {
 		PlayerInput(); //Turno del jugador
 		printBoard(); //Imprime la tabla
-		//CheckWin();
+		CheckWin();
 		if(agentWin || playerWin)
 			break;
 		AgentTurn(); //Turno del agente
 		/*copyBoard(); */
-		//CheckWin();
+		CheckWin();
 		if(agentWin || playerWin)
 			break;
 		printBoard(); //Imprime la tabla
@@ -312,61 +312,69 @@ bool TicTacToe::Terminal(string** g)
  *@return regresa el número de la jugada (1 aceptable o -1 inaceptable) */
 int TicTacToe::MinMaxR(int i, int j, int turn, string** cp)
 {
-	int value = 0;
-	string** copy = GenerateCopy(cp); //Genera la copia del tablero de juego
-	if (turn == 1)
-	{ //El turno es del agente
-		copy[i][j] = "X"; //En la copia imprime una X en estas posiciones
-	}
-	else
-	{ //El turno es del jugador
-		copy[i][j] = "O"; //En la copia imprime una O en estas posiciones
-	}
-	
-	if (!Terminal(copy))
-	{ //Si no ha sido un estado terminal
-		for (int i = 0; i < lines; i++)
-		{ //Itera por la primera dimensión del arreglo
-			for (int j = 0; j < columns; j++) 
-			{ //Itera por la segunda dimensión del arreglo
-				if (copy[i][j] != "O" && copy[i][j] != "X")
-				{ //Pregunta si es un espacio vacío 
-					if (turn == 1)
-					{ //Si es turno del agente
-						value += MinMaxR(i, j, 2, copy); //Recursividad con el turno del jugador y suma el resultador
-					}
-					else
-					{
-						value += MinMaxR(i, j, 1, copy); //Recursividad con el turno del agente y suma el resultado
+	try {
+		int value = 0;
+		string** copy = GenerateCopy(cp); //Genera la copia del tablero de juego
+		if (turn == 1)
+		{ //El turno es del agente
+			copy[i][j] = "X"; //En la copia imprime una X en estas posiciones
+		}
+		else
+		{ //El turno es del jugador
+			copy[i][j] = "O"; //En la copia imprime una O en estas posiciones
+		}
+		
+		if (!Terminal(copy))
+		{ //Si no ha sido un estado terminal
+			for (int i = 0; i < lines; i++)
+			{ //Itera por la primera dimensión del arreglo
+				for (int j = 0; j < columns; j++) 
+				{ //Itera por la segunda dimensión del arreglo
+					if (copy[i][j] != "O" && copy[i][j] != "X")
+					{ //Pregunta si es un espacio vacío 
+						if (turn == 1)
+						{ //Si es turno del agente
+							value += MinMaxR(i, j, 2, copy); //Recursividad con el turno del jugador y suma el resultador
+						}
+						else
+						{
+							value += MinMaxR(i, j, 1, copy); //Recursividad con el turno del agente y suma el resultado
+						}
 					}
 				}
 			}
+			return value;
 		}
-		return value;
+		else
+		{ //Es un estado terminal
+			if (turn == 1)
+			{  //Es turno del agente
+				return 1; //Regresa 1
+			}
+			else if (turn == 2)
+			{ //Es turno del jugador
+				return -1; //Regresa -1
+			}
+		}
 	}
-	else
-	{ //Es un estado terminal
-		if (turn == 1)
-		{  //Es turno del agente
-			return 1; //Regresa 1
-		}
-		else if (turn == 2)
-		{ //Es turno del jugador
-			return -1; //Regresa -1
-		}
+	catch (exception & e) {
+		cout << "exeption caught: " << e.what() << endl;
 	}
 }
 
-
+/*Se genera una copia de la matriz indicada en el argumento y se regresa la copia.
+ *@param[string** c] la matriz a la cual se le desea hacer la copia
+ *@return se regresa la copia generada*/
 string** TicTacToe::GenerateCopy(string** c)
 {
-	string** copy = new string * [lines];
+	string** copy = new string * [lines]; //Crea una matriz de dos dimensiones con apuntadores
+
 	for (int i = 0; i < 3; i++)
 	{
 		copy[i] = new string[columns];
 		for (int j = 0; j < 3; j++)
 		{
-			copy[i][j] = gameBoard[i][j];
+			copy[i][j] = c[i][j];
 		}
 	}
 	return copy;
