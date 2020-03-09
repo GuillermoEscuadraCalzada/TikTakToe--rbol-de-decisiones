@@ -57,17 +57,22 @@ void TicTacToe::Init() {
 /*Actualizacíon constante del juego*/
 void TicTacToe::Update() {
 	while(running) {
-		PlayerInput(); //Turno del jugador
-		printBoard(); //Imprime la tabla
-		CheckWin();
-		if(agentWin || playerWin)
-			break;
-		AgentTurn(); //Turno del agente
-		/*copyBoard(); */
-		CheckWin();
-		if(agentWin || playerWin)
-			break;
-		printBoard(); //Imprime la tabla
+		if (PlayerInput() == true) { //Turno del jugador
+			printBoard(); //Imprime la tabla
+			CheckWin();
+			if (agentWin || playerWin) {
+				printBoard(); //Imprime la tabla
+				break;
+			}
+			AgentTurn(); //Turno del agente
+			/*copyBoard(); */
+			CheckWin();
+			if (agentWin || playerWin) {
+				printBoard(); //Imprime la tabla
+				break;
+			}
+			printBoard(); //Imprime la tabla
+		}
 	}
 	if (playerWin)
 	{
@@ -80,7 +85,7 @@ void TicTacToe::Update() {
 }
 
 /*Detecta la posición en la que el jugador decide poner su símbolo*/
-void TicTacToe::PlayerInput() {
+bool TicTacToe::PlayerInput() {
 	try {
 
 		cout << "Elige la fila donde se ubicara tu simbolo: ";
@@ -97,6 +102,7 @@ void TicTacToe::PlayerInput() {
 			cout << "Esa posicion ya fue elegida.\n";
 		else {
 			setNewBoard(x, y); //Cambia el tablero actual
+			return true;
 		}
 		cout << endl;
 
@@ -369,67 +375,17 @@ string** TicTacToe::GenerateCopy(string** c)
 {
 	string** copy = new string * [lines]; //Crea una matriz de dos dimensiones con apuntadores
 
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < lines; i++)
 	{
 		copy[i] = new string[columns];
-		for (int j = 0; j < 3; j++)
+		for (int j = 0; j < columns; j++)
 		{
-			copy[i][j] = c[i][j];
+			copy[i][j] = c[i][j]; //Copia los valores de este arreglo
 		}
 	}
 	return copy;
 }
 
-/*Checa las casillas adyacentes a la casilla actual y a sus vecinos posibles
- *@param[int y] posición dentro de una matriz en las líneas
- *@param[int x] posición dentro de una matriz en las columnas
- *@param[NodoG<string>* posibilidad] el nodo que tiene una posibilidad para establecer la jugada del agente */
-void TicTacToe::checkAdjacent(int y, int x, NodoG<string>* posibilidad)
-{
-	try {
-		if (x + 1 <  columns) { //Analizar la posición de en frente de la casilla actual
-			if (gameBoard[y][x + 1] == "X"|| gameBoard[y][x + 1] == "_") { //Pregunta si la casilla frontal tiene jugada del agente o está vacía
-				posibilidad->cost += 10; //Aumenta el coste del nodo en 10
-			} else if (gameBoard[y][x + 1] == "O") { //Si la casilla de enfrente tiene símbolo del jugador, reduce el costo del nodo
-				posibilidad->cost -= 10;
-			}
-		}
-		if (x - 1 >= 0) {
-			if (gameBoard[y][x - 1] == "X" || gameBoard[y][x - 1] == "_") { //Pregunta si la casilla trasera tiene jugada del agente o está vacía
-				posibilidad->cost += 10;
-			} else if (gameBoard[y][x - 1] == "O") {
-				posibilidad->cost -= 10;
-			}
-
-		}if (y + 1 < lines) {
-			if (gameBoard[y + 1][x] == "X" || gameBoard[y + 1][x] == "_") { //Pregunta si la casilla de arriba tiene jugada del agente o está vacía
-				posibilidad->cost += 10;
-			} else if (gameBoard[y + 1][x] == "O") {
-				posibilidad->cost -= 10;
-			}
-		}
-		if (y - 1 >= 0) {
-			if (gameBoard[y - 1][x] == "X" || gameBoard[y - 1][x] == "_") { //Pregunta si la casilla de abajo tiene jugada del agente o está vacía
-				posibilidad->cost += 10;
-			} else if (gameBoard[y - 1][x] == "O") {
-				posibilidad->cost -= 10;
-			}
-		}
-	} catch (...) {
-		cout << "Algo salio mal!\n";
-	}
-}
-
-void TicTacToe::checarHijos(int x, int y) 	{
-	try {
-		if(gameBoard[x][y] != "X" || gameBoard[x][y] == "_") {
-			if(y + 1 != NULL)
-				checarHijos(x, y + 1);
-		}
-	} catch(...) {	
-		cout << "Algo esta mal!\n";
-	}
-}
 
 TicTacToe::TicTacToe() {
 }

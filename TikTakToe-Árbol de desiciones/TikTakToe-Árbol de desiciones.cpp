@@ -15,6 +15,4 @@ int main()
     TicTacToe* game = TicTacToe::GetPtr();
     game->Init();
     game->Update();
-    //game->PlayerInput();
-    game->Update();
 }

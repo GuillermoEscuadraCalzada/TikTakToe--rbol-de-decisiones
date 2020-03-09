@@ -17,7 +17,7 @@ public:
 	void Update();
 	void CheckWin();
 private:
-	void PlayerInput();
+	bool PlayerInput();
 	void setNewBoard(int x, int y);
 	int x, y;
 	string** gameBoard; //El tablero representado como matriz de 2x2
@@ -25,15 +25,12 @@ private:
 	void SetUp();
 	void printBoard();
 	void AgentTurn();
-	void checkAdjacent(int y, int x, NodoG<string>* posibilidad);
-	void checarHijos(int x, int y);
 	bool running, playerWin, agentWin;
 	static TicTacToe* ptr;
 	Grafo<string>* posibilidades;
 	Vector2* MinMax(string** g);
 	bool Terminal(string** g);
 	string** GenerateCopy(string** c);
-	void deleteCopy(string** copy);
 	int MinMaxR(int i, int j, int turn, string** copy); //1 IA, 2 es player
 	TicTacToe();
 	~TicTacToe();
