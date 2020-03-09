@@ -4,8 +4,10 @@ TicTacToe* TicTacToe::ptr = nullptr;
 /*Se imprimen los lugares vaciós dentro del arreglo de dos dimensiones donde sucederá el juego*/
 void TicTacToe::SetUp() {
 	try {
+		gameBoard = new string * [lines];
 		/*Determinar qué se va a imprimir dentro de las casillas que tendrá el gameBoard*/
 		for(int i = 0; i < lines; i++) {
+			gameBoard[i] = new string[columns];
 			for(int j = 0; j < columns; j++) {
 				gameBoard[i][j] = "_";
 			}
@@ -212,53 +214,91 @@ void TicTacToe::CheckWin()
 
 /*Es el turno del agente, checa qué cambios hay en el tablero y a partir de ahí revisa qué cambios hubo.*/
 void TicTacToe::AgentTurn() {
-	try {
-		for(int i = 0; i < lines; i++) { //Guardar los elementos desocupados del tablero dentro del grafo
-			for(int j = 0; j < columns; j++) { //Insertar jugada del agente aquí y checar sus hijos
-				if(gameBoard[i][j] != "O" && gameBoard[i][j] != "X") {
-					posibilidades->InsertaNodo(new NodoG<string>(gameBoard[i][j], j, i)); //Añadir el nodo al grafo
-				}
-			} cout << endl;
-		} 
-		posibilidades->PrintPath(posibilidades->GetAllNodes()); //Imprimir los nodos disponibles
-		NodoT<NodoG<string>*>* iterador = posibilidades->GetAllNodes().first;
-		for (int i = 0; i < lines; i++) {
-			for (int j = 0; j < columns; j++) {
-				if (i == iterador->value->y && j == iterador->value->x) {
-					checkAdjacent(i, j, iterador->value);
-				}
-			}
-		}
-
-		//for(int i = 0; i < lines; i++) {
-		//	for(int j = 0; j < columns; j++) {
-		//		if(posicion == nodo->value->nodoData) {
-		//			cout << "Visitando la posicion: " << i << ", " << j << endl;
-		//			if(j - 1 != -1) {
-		//				cout << "Tengo alguien detras!\n";
-		//			}
-		//			if(j + 1 != columns) {
-		//				cout << "Tengo alguien en frente!\n";
-		//				//checarHijos(i, j + 1);
-		//			}
-		//			if(i - 1 != -1) {
-		//				cout << "Tengo alguien arriba!\n";
-		//			}
-		//			if(i + 1 != lines) {
-		//				cout << "Tengo alguien debajo!\n";
-		//				//checarHijos(i, j + 1);
-		//			}
-		//			nodo = nodo->next;
-		//		}
-		//		cout << endl;
-		//		posicion++;
-		//	}
-		//}
-		
+	try 
+	{
+		MinMax(GenerateCopy(gameBoard));
 	} catch(...) {
 		cout << "Algo esta mal!\n";
 	}
 
+}
+
+Vector2 TicTacToe::MinMax(string** g)
+{
+	for (int i = 0; i < 3; i++)
+	{
+		for (int j = 0; j < 3; j++)
+		{
+			if (g[i][j] != "O" && g[i][j] != "X")
+			{
+				MinMaxR(i, j, 1, g);
+			}
+		}
+	}
+}
+
+
+
+int TicTacToe::MinMaxR(int i, int j, int turn, string** g)
+{
+	int value = 0;
+	string** copy = GenerateCopy(g);
+	if (turn == 1)
+	{
+		copy[i][j] = "X";
+	}
+	else
+	{
+		copy[i][j] = "O";
+	}
+	
+	if (!Terminal(copy))
+	{
+		for (int i = 0; i < 3; i++)
+		{
+			for (int j = 0; j < 3; j++)
+			{
+				if (copy[i][j] != "O" && copy[i][j] != "X")
+				{
+					if (turn == 1)
+					{
+						value += MinMaxR(i, j, 2, copy);
+					}
+					else
+					{
+						value += MinMaxR(i, j, 1, copy);
+					}
+				}
+			}
+		}
+		return value;
+	}
+	else
+	{
+		if (turn == 1)
+		{
+			return 1;
+		}
+		else if (turn == 2)
+		{
+			return -1;
+		}
+	}
+}
+
+
+string** TicTacToe::GenerateCopy(string** c)
+{
+	string** copy = new string * [lines];
+	for (int i = 0; i < 3; i++)
+	{
+		copy[i] = new string[columns];
+		for (int j = 0; j < 3; j++)
+		{
+			copy[i][j] = gameBoard[i][j];
+		}
+	}
+	return copy;
 }
 
 /*Checa las casillas adyacentes a la casilla actual y a sus vecinos posibles
